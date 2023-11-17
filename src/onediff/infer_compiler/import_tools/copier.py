@@ -60,7 +60,9 @@ class PackageCopier:
     ):
         self.old_pkg_name, self.old_pkg_path = self._get_path(old_pkg)
         self.new_pkg_name = prefix + self.old_pkg_name + suffix
-        if use_temp_dir:
+        if "ONEDIFF_MOCK_TEMP_DIR" in os.environ:
+            self.new_pkg_path = Path(os.environ["ONEDIFF_MOCK_TEMP_DIR"]) / self.new_pkg_name
+        elif use_temp_dir:
             self.new_pkg_path = Path(tempfile.gettempdir()) / self.new_pkg_name
         else:
             self.new_pkg_path = self.old_pkg_path.parent / self.new_pkg_name
